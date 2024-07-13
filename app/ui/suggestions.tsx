@@ -1,8 +1,8 @@
 import { fetchFilteredResults } from "../lib/data"
 
-export default async function Suggestion(){
-
-    const allCities = await fetchFilteredResults()
+export default async function Suggestion({query}: {query : string}){
+    
+    const allCities = await fetchFilteredResults(query)
     const renderedCities = allCities.map((city, index) => (
         <div key={index} >
             <p>{city.cityName}</p>

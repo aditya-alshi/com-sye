@@ -1,9 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function fetchFilteredResults(){
+export async function fetchFilteredResults(term: string){
     try {
-        const allCities = await prisma.city.findMany();
+        
+        const allCities = term ? await prisma.city.findMany({
+            where: {
+                cityName : { contains: term}
+            }
+        }): await prisma.city.findMany();
         return (allCities);
     } catch (error) {
         console.log(error);

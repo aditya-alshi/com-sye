@@ -2,8 +2,18 @@ import { FaBusSimple } from "react-icons/fa6";
 import { SlCalender } from "react-icons/sl";
 import { GoArrowSwitch } from "react-icons/go";
 import Suggestion from "./ui/suggestions";
+import Search from "./ui/search";
 
-export default function Page(){
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}){
+  
+  const query = searchParams?.query || '';
   return(
     <div>
       <section className="overflow-hidden [&>*]:text-xl relative top-40 flex justify-evenly border border-red-400 rounded-3xl">
@@ -11,7 +21,7 @@ export default function Page(){
           <FaBusSimple className="row-[1/-1]" />
           <div >
             <p className="text-gray-500 text-base">From</p>
-            <div>Mumbai</div>
+            <Search />
           </div>
           <div className=" bg-white absolute top-[30%] right-[-6%] border rounded-full w-10 h-10 " >
             <GoArrowSwitch className=" absolute top-[28%] left-[28%] "/>
@@ -35,10 +45,10 @@ export default function Page(){
         <div className="bg-red-500 flex-[0.65] p-5 grid grid-cols-[1fr] justify-items-center items-center font-bold text-white"> SEARCH BUSES</div>
       </section>
         <section className=" relative bottom-[-11rem] left-[4rem]">
-          <Suggestion />
+          <Suggestion query={query}/>
         </section>
         <section className="hidden relative bottom-[-11rem] left-[25rem]">
-          <Suggestion />
+          {/* <Suggestion /> */}
         </section>
     </div>
   )
