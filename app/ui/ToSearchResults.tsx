@@ -13,7 +13,7 @@ export default async function ToSearchResults({
     ))
     return (
         <div>
-            <DropDown searchResult={searchResult} inputBox={"to"}/>
+            {/* <DropDown searchResult={searchResult} inputBox={"to"}/> */}
         </div>
     )
 }

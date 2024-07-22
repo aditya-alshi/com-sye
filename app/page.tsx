@@ -4,7 +4,7 @@ import { GoArrowSwitch } from "react-icons/go";
 import ToSearch from "./ui/ToSearch";
 import FromSearch from "./ui/FromSearch";
 import ToSearchResults from "./ui/ToSearchResults";
-import FromSearchResults from "./ui/FromSearchResults";
+// import FromSearchResults from "./ui/FromSearchResults";
 import DateBook from "./ui/DateBook";
 import { fetchFilteredResults } from "./lib/data";
 import DropDown from "./ui/DropDown";
@@ -47,7 +47,7 @@ export default async function Page({
           <FaBusSimple className="row-[1/-1]" />
           <div className="relative">
             <p className="text-gray-500 text-base">To</p>
-            <ToSearch />
+            {/* <ToSearch /> */}
             {toQuery && toqueryFocus && (
               <section
                 id="to--suggestion--wrapper"
