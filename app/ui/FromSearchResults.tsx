@@ -7,11 +7,11 @@ export default async function FromSearchResults({
     fromquery: string
 } 
 ) {
-    const searchResult = await fetchFilteredResults(fromquery);
+    const searchResult = await fetchFilteredResults(fromquery) ;
     
     return (
         <div>
-            <DropDown searchResult={searchResult} inputBox={"from"}/>
+            <DropDown searchResult={searchResult}  inputBox={"from"}/>
         </div>
     )
 }

@@ -10,11 +10,7 @@ export default function Search() {
     const { replace } = useRouter();
 
     const handleChange = useDebouncedCallback((term : string) => {
-        console.log('used');
         const params = new URLSearchParams(searchParams);
-        if(params.get("fromquery")){
-            params.delete("fromquery")
-        }
         if(term !== "") {
             params.set("toquery", term);
         }else{
@@ -23,12 +19,31 @@ export default function Search() {
         replace(`${pathname}?${params.toString()}`);
     }, 300)
 
+    function handleFromOnFocus(){
+        const params = new URLSearchParams(searchParams);
+        params.delete("fromFocus");
+        params.set("toqueryFocus", "focus");
+        replace(`${pathname}?${params.toString()}`);
+    }
+
+    function handleFromOnBlur(){
+        const params = new URLSearchParams(searchParams);
+        params.delete("toqueryFocus");
+        replace(`${pathname}?${params.toString()}`);
+    }
+
   return (
     <input 
         onChange={(e) => {
             handleChange(e.target.value);
         }}
         defaultValue={searchParams.get('toquery')?.toString()}
+        onFocus={() => {
+            handleFromOnFocus();
+        }}
+        onBlur={() => {
+            handleFromOnBlur();
+        }}
     />
   )
 }

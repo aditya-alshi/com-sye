@@ -5,25 +5,39 @@ import ToSearch from "./ui/ToSearch";
 import FromSearch from "./ui/FromSearch";
 import ToSearchResults from "./ui/ToSearchResults";
 import FromSearchResults from "./ui/FromSearchResults";
+import DateBook from "./ui/DateBook";
+import { fetchFilteredResults } from "./lib/data";
+import DropDown from "./ui/DropDown";
 
-export default function Page({
-  searchParams,
-}: {
+export type SP = {
   searchParams?: {
     toquery?: string;
     fromquery?: string;
+    fromFocus?: string;
+    toqueryFocus?:string;
   };
-}) {
+}
+
+export default async function Page({
+  searchParams,
+}: SP) {
   const toQuery = searchParams?.toquery || "";
   const fromQuery = searchParams?.fromquery || "";
+  const fromFocus = searchParams?.fromFocus || "";
+  const toqueryFocus = searchParams?.toqueryFocus|| "";
+  const fromSearchResult = await fetchFilteredResults(fromQuery);
+  const toSearchResult = await fetchFilteredResults(toQuery)
   return (
     <div>
-      <section className="overflow-hidden [&>*]:text-xl relative top-40 flex justify-evenly border border-red-400 rounded-3xl">
+      <p>{fromQuery}</p>
+      <section className=" [&>*]:text-xl relative top-40 flex justify-evenly border border-red-400 rounded-3xl">
         <div className=" relative border-r flex-1 p-5 grid grid-cols-[1fr_4fr] justify-items-start items-center  ">
           <FaBusSimple className="row-[1/-1]" />
-          <div>
+          <div className="relative">
             <p className="text-gray-500 text-base">From</p>
-            <FromSearch />
+            <FromSearch fromSearchResult={fromSearchResult} fromParam={fromQuery}/>
+            {/* {fromFocus && fromQuery && (
+            )} */}
           </div>
           <div className=" bg-white absolute top-[30%] right-[-6%] border rounded-full w-10 h-10 ">
             <GoArrowSwitch className=" absolute top-[28%] left-[28%] " />
@@ -31,17 +45,23 @@ export default function Page({
         </div>
         <div className="  border-r flex-1 ml-1 p-5 grid grid-cols-[1fr_4fr] justify-items-start items-center  ">
           <FaBusSimple className="row-[1/-1]" />
-          <div>
+          <div className="relative">
             <p className="text-gray-500 text-base">To</p>
             <ToSearch />
+            {toQuery && toqueryFocus && (
+              <section
+                id="to--suggestion--wrapper"
+                className="bg-gray-300 absolute w-56 h-56 overflow-y-auto bottom-[-16rem]"
+              >
+                {/* <DropDown searchResult={toSearchResult} inputBox={"to"}/> */}
+              </section>
+            )}
           </div>
         </div>
         <div className=" border-r flex-1 p-5 grid grid-cols-[1fr_4fr] justify-items-start items-center  ">
-          <SlCalender className="row-[1/-1]" />
           <div>
             <p className="text-gray-500 text-base">Date</p>
-            <div>24/5/24</div>
-            <div>year</div>
+            <DateBook />
           </div>
         </div>
         <div className="bg-red-500 flex-[0.65] p-5 grid grid-cols-[1fr] justify-items-center items-center font-bold text-white">
@@ -49,22 +69,6 @@ export default function Page({
           SEARCH BUSES
         </div>
       </section>
-      {fromQuery && (
-        <section
-          id="from--suggestion--wrapper"
-          className=" w-fit relative bottom-[-11rem] left-[4rem]"
-        >
-          <FromSearchResults fromquery={fromQuery} />
-        </section>
-      )}
-      {toQuery && (
-        <section
-          id="to--suggestion--wrapper"
-          className=" w-fit relative bottom-[-11rem] left-[25rem]"
-        >
-          <ToSearchResults toquery={toQuery} />
-        </section>
-      )}
     </div>
   );
 }

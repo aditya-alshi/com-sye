@@ -3,15 +3,17 @@ const prisma = new PrismaClient();
 
 export async function fetchFilteredResults(term: string){
     try {
-        
-        const allCities = term ? await prisma.city.findMany({
-            where: {
-                cityName : { contains: term}
-            }
-        }): await prisma.city.findMany();
-        return (allCities);
+        if(term !== ""){
+            const allCities = term ? await prisma.city.findMany({
+                where: {
+                    cityName : { contains: term}
+                }
+            }): await prisma.city.findMany();
+            return (allCities);
+        }
+        else return []
     } catch (error) {
-        console.log(error);
+        console.log("Error happen in this data thing " + error);
         process.exit(1);
     }finally {
         prisma.$disconnect();
