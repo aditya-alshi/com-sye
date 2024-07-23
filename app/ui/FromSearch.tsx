@@ -21,6 +21,7 @@ export default function FromSearch({
     
     const pathname = usePathname();
     const { replace } = useRouter();
+    const router = useRouter();
     
     const handleChange = useDebouncedCallback((term : string) => {
         const params = new URLSearchParams(searchParams);
@@ -63,22 +64,19 @@ export default function FromSearch({
         params.set("fromquery", city)
         params.delete("fromFocus");
         replace(`${pathname}?${params.toString()}`);
+        router.refresh();
     }
 
   return (
     <div>
         <input 
             ref={inputElementRef}
-            id="pasan"
             onChange={(e) => {
                 handleChange(e.target.value);
             }}
             onFocus={(e) => {
                 handleFromOnFocus(e.target.value);
             }}
-            // onBlur={() => {
-            //     handleFromOnBlur();
-            // }}
             defaultValue={searchParams.get('fromquery')?.toString()}
             
         />
