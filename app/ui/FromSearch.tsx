@@ -2,26 +2,25 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import type { SP } from "../page";
 import DropDown from "./DropDown";
 import React from "react";
 
 export default function FromSearch({
-    fromParam, fromSearchResult
-} : { fromParam : string;
+     fromSearchResult
+} : {
     fromSearchResult: {
         cityId: string;
         cityName: string;
       }[]
  }
 ) {
-    const dropdownRef = React.useRef<HTMLElement>(null)
+    const dropdownRef = React.useRef<HTMLElement>(null);
+    const inputElementRef = React.useRef<HTMLInputElement>(null);
 
     const searchParams = useSearchParams();
     
     const pathname = usePathname();
     const { replace } = useRouter();
-    const router = useRouter();
     
     const handleChange = useDebouncedCallback((term : string) => {
         const params = new URLSearchParams(searchParams);
@@ -41,22 +40,22 @@ export default function FromSearch({
                 replace(`${pathname}?${params.toString()}`);
             }
         }
-
+        
         document.addEventListener("mousedown", handler )
     })
-
-    function handleFromOnFocus(){
+    
+    function handleFromOnFocus(term: string){
         const params = new URLSearchParams(searchParams);
+        params.set("fromquery", term);
         params.delete("toqueryFocus")
         params.set("fromFocus", "true");
         replace(`${pathname}?${params.toString()}`);
-        router.refresh();
     }
     
     // function handleFromOnBlur(){
-    //     const params = new URLSearchParams(searchParams);
-    //     params.delete("fromFocus");
-    //     replace(`${pathname}?${params.toString()}`);
+        //     const params = new URLSearchParams(searchParams);
+        //     params.delete("fromFocus");
+        //     replace(`${pathname}?${params.toString()}`);
     // }
     
     function fromResultClick(city: string){
@@ -69,16 +68,17 @@ export default function FromSearch({
   return (
     <div>
         <input 
+            ref={inputElementRef}
+            id="pasan"
             onChange={(e) => {
                 handleChange(e.target.value);
             }}
-            onFocus={() => {
-                handleFromOnFocus();
+            onFocus={(e) => {
+                handleFromOnFocus(e.target.value);
             }}
             // onBlur={() => {
             //     handleFromOnBlur();
             // }}
-            
             defaultValue={searchParams.get('fromquery')?.toString()}
             
         />

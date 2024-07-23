@@ -23,21 +23,19 @@ export default async function Page({
 }: SP) {
   const toQuery = searchParams?.toquery || "";
   const fromQuery = searchParams?.fromquery || "";
-  const fromFocus = searchParams?.fromFocus || "";
+  
   const toqueryFocus = searchParams?.toqueryFocus|| "";
   const fromSearchResult = await fetchFilteredResults(fromQuery);
   const toSearchResult = await fetchFilteredResults(toQuery)
   return (
     <div>
-      <p>{fromQuery}</p>
       <section className=" [&>*]:text-xl relative top-40 flex justify-evenly border border-red-400 rounded-3xl">
         <div className=" relative border-r flex-1 p-5 grid grid-cols-[1fr_4fr] justify-items-start items-center  ">
           <FaBusSimple className="row-[1/-1]" />
           <div className="relative">
             <p className="text-gray-500 text-base">From</p>
-            <FromSearch fromSearchResult={fromSearchResult} fromParam={fromQuery}/>
-            {/* {fromFocus && fromQuery && (
-            )} */}
+            <FromSearch fromSearchResult={fromSearchResult} />
+            
           </div>
           <div className=" bg-white absolute top-[30%] right-[-6%] border rounded-full w-10 h-10 ">
             <GoArrowSwitch className=" absolute top-[28%] left-[28%] " />
