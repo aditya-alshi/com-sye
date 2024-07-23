@@ -39,7 +39,7 @@ export default function FromSearch({
             params.delete("fromquery");
         }
         replace(`${pathname}?${params.toString()}`);
-    }, 450);
+    }, 300);
 
     React.useEffect(() => {
         let handler = (e : MouseEvent) => {
