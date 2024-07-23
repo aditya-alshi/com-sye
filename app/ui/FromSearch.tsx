@@ -3,7 +3,7 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import DropDown from "./DropDown";
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 export default function FromSearch({
      fromSearchResult
@@ -17,13 +17,21 @@ export default function FromSearch({
     const dropdownRef = React.useRef<HTMLElement>(null);
     const inputElementRef = React.useRef<HTMLInputElement>(null);
 
+    const [fromQueryState, setFromQueryState] = React.useState("");
+
     const searchParams = useSearchParams();
     
     const pathname = usePathname();
     const { replace } = useRouter();
     const router = useRouter();
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setFromQueryState(e.currentTarget.value);
+        updateterm(e.currentTarget.value);
+    }
     
-    const handleChange = useDebouncedCallback((term : string) => {
+    const updateterm = useDebouncedCallback((term : string) => {
         const params = new URLSearchParams(searchParams);
         if(term !== "") {
             params.set("fromquery", term);
@@ -31,7 +39,7 @@ export default function FromSearch({
             params.delete("fromquery");
         }
         replace(`${pathname}?${params.toString()}`);
-    }, 300);
+    }, 450);
 
     React.useEffect(() => {
         let handler = (e : MouseEvent) => {
@@ -63,8 +71,8 @@ export default function FromSearch({
         const params = new URLSearchParams(searchParams);
         params.set("fromquery", city)
         params.delete("fromFocus");
-        replace(`${pathname}?${params.toString()}`);
-        router.refresh();
+        router.push(`${pathname}?${params.toString()}`);
+        setFromQueryState(params.get("fromquery") || "");
     }
 
   return (
@@ -72,12 +80,13 @@ export default function FromSearch({
         <input 
             ref={inputElementRef}
             onChange={(e) => {
-                handleChange(e.target.value);
+                handleChange(e);
             }}
+            
             onFocus={(e) => {
                 handleFromOnFocus(e.target.value);
             }}
-            defaultValue={searchParams.get('fromquery')?.toString()}
+            value={fromQueryState}
             
         />
         {
