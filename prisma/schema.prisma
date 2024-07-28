@@ -21,3 +21,11 @@ model City {
   cityId String @id @default(cuid()) @map("city_id")
   cityName String @db.VarChar(255) @map("city_name")
 }
+
+model BookingInformation {
+  bookingId String @id @default(cuid()) @map("booking_id")
+  fromCity String @db.VarChar(255) @map("from_city")
+  toCity String @db.VarChar(255) @map("to_city")
+  bookedForDate String @map("booked_for_date")
+  createdAt  DateTime   @default(now())
+}
